@@ -6,19 +6,19 @@
   <div class='row'>
     <label class='col-2 control-label'>Nume*</label>
     <div class='col-9'>
-      <input [(ngModel)]='modal.nume' class='form-control' placeholder='Nume...' maxlength='255' />
+      <input [(ngModel)]='modal.nume' class='form-control' [ngClass]="{'border border-danger': campuriIncorecte.includes(0)}" placeholder='Nume...' maxlength='255' />
     </div>
   </div>
   <div class='row'>
     <label class='col-2 control-label'>Prenume*</label>
     <div class='col-9'>
-      <input [(ngModel)]='modal.prenume' class='form-control' placeholder='Prenume...' maxlength='255' />
+      <input [(ngModel)]='modal.prenume' class='form-control' [ngClass]="{'border border-danger': campuriIncorecte.includes(1)}" placeholder='Prenume...' maxlength='255' />
     </div>
   </div>
   <div class='row'>
     <label class='col-2 control-label'>CNP*</label>
     <div class='col-9'>
-      <input [(ngModel)]='modal.CNP' class='form-control' placeholder='CNP...' maxlength='13' />
+      <input [(ngModel)]='modal.CNP' class='form-control' [ngClass]="{'border border-danger': campuriIncorecte.includes(2)}" placeholder='CNP...' maxlength='13' />
     </div>
   </div>
   <div class='row'>

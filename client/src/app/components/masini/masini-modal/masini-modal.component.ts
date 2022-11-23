@@ -13,6 +13,7 @@ export class MasiniModalComponent implements OnInit {
   @Input() id_masina: number | undefined;
 
   modal = {} as InterfataMasina;
+  campuriIncorecte = [] as Number[]
   constructor(private _spinner: NgxSpinnerService, public activeModal: NgbActiveModal, private toastr: ToastrService) {
   }
 
@@ -29,20 +30,22 @@ export class MasiniModalComponent implements OnInit {
   save(): void {
     if(!this.modal.Denumire_marca || this.modal.Denumire_marca.length > 255) {
       this.toastr.error('Marcă invalidă!')
-      return;
+      this.campuriIncorecte.push(0)
     }
     if(!this.modal.Denumire_model || this.modal.Denumire_model.length > 255) {
       this.toastr.error('Model invalid!')
-      return;
+      this.campuriIncorecte.push(1)
     }
     if(!this.modal.Anul_fabricatiei || this.modal.Anul_fabricatiei > (new Date().getFullYear())) {
       this.toastr.error('An fabricație invalid!')
-      return;
+      this.campuriIncorecte.push(2)
     }
     if(!this.modal.Capacitate_cilindrica || this.modal.Capacitate_cilindrica > 9999) {
       this.toastr.error('Capacitate cilindrică invalidă!')
-      return;
+      this.campuriIncorecte.push(3)
     }
+    if(this.campuriIncorecte.length > 0)
+      return;
     this._spinner.show();
     let taxa = this.modal.Capacitate_cilindrica < 1500 ? 50 : this.modal.Capacitate_cilindrica < 2000 ? 100 : 200
     this.modal = {...this.modal, Taxa_de_impozit: taxa}

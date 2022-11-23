@@ -16,6 +16,11 @@ export interface InterfataPersoana {
     prenume: string;
     CNP: string;
     Varsta: number;
+    anul_fabricatiei: number[];
+    capacitate_cilindrica: number[];
+    denumire_masina: string[];
+    taxa_de_impozit: number[];
+    id_masini: number[];
 }
 
 @Component({
@@ -27,7 +32,34 @@ export class PersoaneComponent implements OnInit {
   faTrashAlt = faTrashAlt; faEdit = faEdit; faChevronUp = faChevronUp; faPlus = faPlus;
   limit: number = 70; showBackTop: string = '';
   persoane: InterfataPersoana[] = [];
-  masiniPersoana: any = []
+  persoaneFiltrate: InterfataPersoana[] = [];
+
+  // filtrare
+  filtrareNume: string = ''
+  filtrareCNP: string = ''
+  filtrareVarsta: string = ''
+
+  set _filtrareNume(value: string) {
+    this.filtrareNume = value
+    this.persoaneFiltrate = this.persoane.filter(p => {
+      return ((p.nume.includes(value) || p.prenume.includes(value)) && p.CNP.includes(this.filtrareCNP) && (Number(this.filtrareVarsta) ? Number(this.filtrareVarsta) === p.Varsta : true))
+    })
+  }
+
+  set _filtrareCNP(value: string) {
+    this.filtrareCNP = value
+    this.persoaneFiltrate = this.persoane.filter(p => {
+      return ((p.nume.includes(this.filtrareNume) || p.prenume.includes(this.filtrareNume)) && p.CNP.includes(this.filtrareCNP) && (Number(this.filtrareVarsta) ? Number(this.filtrareVarsta) === p.Varsta : true))
+    })
+  }
+  
+  set _filtrareVarsta(value: string) {
+    this.filtrareVarsta = value
+    console.log(Number(this.filtrareVarsta) ? 'exista' : 'nu exista')
+    this.persoaneFiltrate = this.persoane.filter(p => {
+      return ((p.nume.includes(this.filtrareNume) || p.prenume.includes(this.filtrareNume)) && p.CNP.includes(this.filtrareCNP) && (Number(this.filtrareVarsta) ? Number(this.filtrareVarsta) === p.Varsta : true))
+    })
+  }
 
   constructor(private _modal: NgbModal, private _spinner: NgxSpinnerService, private toastr: ToastrService) { SET_HEIGHT('view', 20, 'height'); }
 
@@ -38,20 +70,14 @@ export class PersoaneComponent implements OnInit {
   loadData = (): void => {
     this._spinner.show();
     axios.get('/api/persoane').then(({ data }) => {
-      this.masiniPersoana = []
+      console.log(data)
       this.persoane = data;
+      this.persoaneFiltrate = data.filter((d: InterfataPersoana) => d.nume.includes(this.filtrareNume) || d.prenume.includes(this.filtrareNume))
       this._spinner.hide();
-      data.map((d: InterfataPersoana) => {
-        axios.get(`/api/jonctiune/${d.id}`).then(({data}) => {
-          this.masiniPersoana = [...this.masiniPersoana, data]
-        })
-      })
-
     }).catch(() => this.toastr.error('Eroare la preluarea informațiilor!'));
   }
 
   addEdit = (id_persoana?: number): void => {
-    console.log(this.masiniPersoana)
     const modalRef = this._modal.open(PersoaneModalComponent, {size: 'lg', keyboard: false, backdrop: 'static'});
     modalRef.componentInstance.id_persoana = id_persoana;
     modalRef.closed.subscribe(() => {

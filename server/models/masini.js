@@ -28,6 +28,11 @@ module.exports = (sequelize, DataType) => {
     }, {
       timestamps: true
     });
+    model.associate = (models) => {
+      model.hasMany(models.Jonctiune, {
+        foreignKey: 'id'
+      })
+    }
     /*
       Aceasta linie este comentata pentru a demonstra legatura dintre tabelul Information si tabelul Post prin id
     */

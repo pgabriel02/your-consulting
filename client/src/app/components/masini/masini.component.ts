@@ -28,6 +28,102 @@ export class MasiniComponent implements OnInit {
   faTrashAlt = faTrashAlt; faEdit = faEdit; faChevronUp = faChevronUp; faPlus = faPlus;
   limit: number = 70; showBackTop: string = '';
   masini: InterfataMasina[] = [];
+  masiniFiltrate: InterfataMasina[] = []
+
+
+  // filtrare
+
+  filtrareMarca: string = ''
+  filtrareModel: string = ''
+  filtrareAn: string = ''
+  filtrareCapacitate: string = ''
+  filtrareTaxa: string = ''
+
+  set _filtrareMarca(value: string) {
+    this.filtrareMarca = value
+    this.masiniFiltrate = this.masini.filter(m => {
+      return (
+        m.Denumire_marca.includes(this.filtrareMarca) && m.Denumire_model.includes(this.filtrareModel) &&
+        (
+          Number(this.filtrareAn) ? m.Anul_fabricatiei = Number(this.filtrareAn) : true
+        ) &&
+        (
+          Number(this.filtrareCapacitate) ? m.Capacitate_cilindrica = Number(this.filtrareCapacitate) : true
+        ) &&
+        (
+          Number(this.filtrareTaxa) ? m.Taxa_de_impozit = Number(this.filtrareTaxa) : true
+        ) 
+      )
+    })
+  }
+  set _filtrareModel(value: string) {
+    this.filtrareModel = value
+    this.masiniFiltrate = this.masini.filter(m => {
+      return (
+        m.Denumire_marca.includes(this.filtrareMarca) && m.Denumire_model.includes(this.filtrareModel) &&
+        (
+          Number(this.filtrareAn) ? m.Anul_fabricatiei = Number(this.filtrareAn) : true
+        ) &&
+        (
+          Number(this.filtrareCapacitate) ? m.Capacitate_cilindrica = Number(this.filtrareCapacitate) : true
+        ) &&
+        (
+          Number(this.filtrareTaxa) ? m.Taxa_de_impozit = Number(this.filtrareTaxa) : true
+        ) 
+      )
+    })
+  }
+  set _filtrareAn(value: string) {
+    this.filtrareAn = value
+    this.masiniFiltrate = this.masini.filter(m => {
+      return (
+        m.Denumire_marca.includes(this.filtrareMarca) && m.Denumire_model.includes(this.filtrareModel) &&
+        (
+          Number(this.filtrareAn) ? m.Anul_fabricatiei === Number(this.filtrareAn) : true
+        ) &&
+        (
+          Number(this.filtrareCapacitate) ? m.Capacitate_cilindrica = Number(this.filtrareCapacitate) : true
+        ) &&
+        (
+          Number(this.filtrareTaxa) ? m.Taxa_de_impozit === Number(this.filtrareTaxa) : true
+        ) 
+      )
+    })
+  }
+  set _filtrareCapacitate(value: string) {
+    this.filtrareCapacitate = value
+    this.masiniFiltrate = this.masini.filter(m => {
+      return (
+        m.Denumire_marca.includes(this.filtrareMarca) && m.Denumire_model.includes(this.filtrareModel) &&
+        (
+          Number(this.filtrareAn) ? m.Anul_fabricatiei === Number(this.filtrareAn) : true
+        ) &&
+        (
+          Number(this.filtrareCapacitate) ? m.Capacitate_cilindrica === Number(this.filtrareCapacitate) : true
+        ) &&
+        (
+          Number(this.filtrareTaxa) ? m.Taxa_de_impozit === Number(this.filtrareTaxa) : true
+        ) 
+      )
+    })
+  }
+  set _filtrareTaxa(value: string) {
+    this.filtrareTaxa = value
+    this.masiniFiltrate = this.masini.filter(m => {
+      return (
+        m.Denumire_marca.includes(this.filtrareMarca) && m.Denumire_model.includes(this.filtrareModel) &&
+        (
+          Number(this.filtrareAn) ? m.Anul_fabricatiei === Number(this.filtrareAn) : true
+        ) &&
+        (
+          Number(this.filtrareCapacitate) ? m.Capacitate_cilindrica === Number(this.filtrareCapacitate) : true
+        ) &&
+        (
+          Number(this.filtrareTaxa) ? m.Taxa_de_impozit === Number(this.filtrareTaxa) : true
+        ) 
+      )
+    })
+  }
 
   constructor(private _modal: NgbModal, private _spinner: NgxSpinnerService, private toastr: ToastrService) { SET_HEIGHT('view', 20, 'height'); }
 
@@ -38,7 +134,8 @@ export class MasiniComponent implements OnInit {
   loadData = (): void => {
     this._spinner.show();
     axios.get('/api/masini').then(({ data }) => {
-      this.masini = data;
+      this.masini = data
+      this.masiniFiltrate = data
       this._spinner.hide();
     }).catch(() => this.toastr.error('Eroare la preluarea informațiilor!'));
   }

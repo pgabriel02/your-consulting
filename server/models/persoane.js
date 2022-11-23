@@ -1,3 +1,5 @@
+
+const Jonctiune = require('./jonctiune')
 module.exports = (sequelize, DataType) => {
     let model = sequelize.define('Persoane', {
       nume: {
@@ -26,7 +28,11 @@ module.exports = (sequelize, DataType) => {
     /*
       Aceasta linie este comentata pentru a demonstra legatura dintre tabelul Information si tabelul Post prin id
     */
-    // model.belongsTo(sequelize.models.Post, {foreignKey: 'id_post', onDelete: 'set null'});
+    model.associate = (models) => {
+      model.hasMany(models.Jonctiune, {
+        foreignKey: 'id'
+      })
+    } 
     return model;
   };
   

@@ -19,15 +19,19 @@ module.exports = db => {
       },
   
       findAll: (req, res) => {
-        db.query(`SELECT *
-        FROM "Persoane"
-        ORDER BY id`, { type: db.QueryTypes.SELECT }).then(resp => {
+        db.query(`SELECT p.id, p.Nume, p.Prenume, p."CNP", p."Varsta", j.id_person, ARRAY_AGG("Denumire_marca" || ' ' ||  "Denumire_model") Denumire_masina, ARRAY_AGG(m.id) id_masini,
+        ARRAY_AGG("Anul_fabricatiei") Anul_fabricatiei, ARRAY_AGG("Capacitate_cilindrica") Capacitate_cilindrica, ARRAY_AGG("Taxa_de_impozit") Taxa_de_impozit
+        FROM "Persoane" as p LEFT JOIN "Jonctiune" as j on p.id = j.id_person left join "Masini" as m on m.id = j.id_car  GROUP BY j.id_person, p.Nume, p.id, p."CNP", p.Prenume, p."Varsta"
+        ORDER BY p.id`, { type: db.QueryTypes.SELECT }).then(resp => {
           res.send(resp);
-        }).catch(() => res.status(401));
+        }).catch((err) => {
+          console.log(err)
+          res.status(401)
+        });
       },
   
       find: (req, res) => {
-        db.query(`SELECT * FROM "Persoane" WHERE id = ${req.params.id}`, { type: db.QueryTypes.SELECT }).then(resp => {
+        db.query(`SELECT p.id, j.id_person, p.Nume, p.Prenume, p."CNP", ARRAY_AGG(j.id_car) id_masini FROM "Persoane" as p left join "Jonctiune" as j on j.id_person = p.id WHERE p.id = ${req.params.id} GROUP BY p.id, j.id_person, p.Nume, p.Prenume `, { type: db.QueryTypes.SELECT }).then(resp => {
           res.send(resp[0]);
         }).catch((err) => {
             console.log(err)
