@@ -61,11 +61,15 @@
                   <fa-icon class='text-danger' [icon]='faTrashAlt'></fa-icon>
                 </td>
               </tr>
-              <tr colspan='15' *ngIf='!persoane.length' class='text-center fw-bold'>
+            </tbody>
+          </table>
+          <table *ngIf="!persoane.length" class='table table-hover table-striped table-bordered font-14 p-0'>
+            <tbody>
+              <tr colspan='15' class='text-center fw-bold'>
                 <td>Date inexistente!</td>
               </tr>
             </tbody>
-        </table>
+          </table>
       </div>
   
       <div class='col-12 position-relative'>
