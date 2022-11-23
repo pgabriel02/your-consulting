@@ -55,7 +55,6 @@ export class PersoaneComponent implements OnInit {
   
   set _filtrareVarsta(value: string) {
     this.filtrareVarsta = value
-    console.log(Number(this.filtrareVarsta) ? 'exista' : 'nu exista')
     this.persoaneFiltrate = this.persoane.filter(p => {
       return ((p.nume.includes(this.filtrareNume) || p.prenume.includes(this.filtrareNume)) && p.CNP.includes(this.filtrareCNP) && (Number(this.filtrareVarsta) ? Number(this.filtrareVarsta) === p.Varsta : true))
     })
@@ -70,9 +69,10 @@ export class PersoaneComponent implements OnInit {
   loadData = (): void => {
     this._spinner.show();
     axios.get('/api/persoane').then(({ data }) => {
-      console.log(data)
       this.persoane = data;
-      this.persoaneFiltrate = data.filter((d: InterfataPersoana) => d.nume.includes(this.filtrareNume) || d.prenume.includes(this.filtrareNume))
+      this.persoaneFiltrate = data.filter(((p: InterfataPersoana) => {
+        return ((p.nume.includes(this.filtrareNume) || p.prenume.includes(this.filtrareNume)) && p.CNP.includes(this.filtrareCNP) && (Number(this.filtrareVarsta) ? Number(this.filtrareVarsta) === p.Varsta : true))
+      }))
       this._spinner.hide();
     }).catch(() => this.toastr.error('Eroare la preluarea informațiilor!'));
   }

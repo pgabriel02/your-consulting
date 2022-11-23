@@ -135,7 +135,20 @@ export class MasiniComponent implements OnInit {
     this._spinner.show();
     axios.get('/api/masini').then(({ data }) => {
       this.masini = data
-      this.masiniFiltrate = data
+      this.masiniFiltrate = data.filter((m: InterfataMasina) => {
+        return (
+          m.Denumire_marca.includes(this.filtrareMarca) && m.Denumire_model.includes(this.filtrareModel) &&
+          (
+            Number(this.filtrareAn) ? m.Anul_fabricatiei === Number(this.filtrareAn) : true
+          ) &&
+          (
+            Number(this.filtrareCapacitate) ? m.Capacitate_cilindrica === Number(this.filtrareCapacitate) : true
+          ) &&
+          (
+            Number(this.filtrareTaxa) ? m.Taxa_de_impozit === Number(this.filtrareTaxa) : true
+          ) 
+        )
+      })
       this._spinner.hide();
     }).catch(() => this.toastr.error('Eroare la preluarea informațiilor!'));
   }
