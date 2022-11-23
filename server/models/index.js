@@ -31,6 +31,21 @@ module.exports = function getModels(sequelize, Sequelize) {
   const arr = [
     /************************ Information *********************/
     {path: __dirname + '/information.js', sync: true},
+
+    /************************ Persoane *********************/
+    {
+      path: __dirname + '/persoane.js', sync: true
+    },
+
+    /************************ Mașini *********************/
+    {
+      path: __dirname + '/masini.js', sync: true
+    },
+
+    /************************ Joncțiune *********************/
+    {
+      path: __dirname + '/jonctiune.js', sync: true
+    }
   ];
 
   const syncTables = [];

@@ -3,20 +3,31 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { faPlus, faEdit, faTrashAlt, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { SCROLL_TOP, SET_HEIGHT } from 'src/app/utils/utils-table';
-import { InformationModalComponent } from './information-modal/information-modal.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MasiniModalComponent } from './masini-modal/masini-modal.component';
+
+
+export interface InterfataMasina{
+  id: number;
+  Denumire_marca: string;
+  Denumire_model: string;
+  Anul_fabricatiei: number;
+  Capacitate_cilindrica: number;
+  Taxa_de_impozit: number;
+  Denumire?: string;
+}
 
 @Component({
-  selector: 'app-container',
-  templateUrl: './information.component.html',
-  styleUrls: ['./information.component.scss']
+  selector: 'app-masini',
+  templateUrl: './masini.component.html',
+  styleUrls: ['./masini.component.scss']
 })
-export class InformationComponent implements OnInit {
+export class MasiniComponent implements OnInit {
   faTrashAlt = faTrashAlt; faEdit = faEdit; faChevronUp = faChevronUp; faPlus = faPlus;
   limit: number = 70; showBackTop: string = '';
-  informations: any = [];
+  masini: InterfataMasina[] = [];
 
   constructor(private _modal: NgbModal, private _spinner: NgxSpinnerService, private toastr: ToastrService) { SET_HEIGHT('view', 20, 'height'); }
 
@@ -26,29 +37,29 @@ export class InformationComponent implements OnInit {
 
   loadData = (): void => {
     this._spinner.show();
-    axios.get('/api/information').then(({ data }) => {
-      this.informations = data;
+    axios.get('/api/masini').then(({ data }) => {
+      this.masini = data;
       this._spinner.hide();
     }).catch(() => this.toastr.error('Eroare la preluarea informațiilor!'));
   }
 
-  addEdit = (id_information?: number): void => {
-    const modalRef = this._modal.open(InformationModalComponent, {size: 'lg', keyboard: false, backdrop: 'static'});
-    modalRef.componentInstance.id_information = id_information;
+  addEdit = (id_masina?: number): void => {
+    const modalRef = this._modal.open(MasiniModalComponent, {size: 'lg', keyboard: false, backdrop: 'static'});
+    modalRef.componentInstance.id_masina = id_masina;
     modalRef.closed.subscribe(() => {
       this.loadData();
     });
   }
 
-  delete = (information: any): void => {
+  delete = (masina: InterfataMasina): void => {
     const modalRef = this._modal.open(ConfirmDialogComponent, {size: 'lg', keyboard: false, backdrop: 'static'});
-    modalRef.componentInstance.title = `Ștergere informație`;
-    modalRef.componentInstance.content = `<p class='text-center mt-1 mb-1'>Doriți să ștergeți informația având tipul <b>${information.type}</b>, denumirea: <b>${information.name}</b>?`;
+    modalRef.componentInstance.title = `Ștergere mașină`;
+    modalRef.componentInstance.content = `<p class='text-center mt-1 mb-1'>Doriți să ștergeți mașina <b>${masina.Denumire_marca} ${masina.Denumire_model}</b>?`;
     modalRef.closed.subscribe(() => {
-      axios.delete(`/api/information/${information.id}`).then(() => {
-        this.toastr.success('Informația a fost ștearsă cu succes!');
+      axios.delete(`/api/masini/${masina.id}`).then(() => {
+        this.toastr.success('Masina a fost ștearsă cu succes!');
         this.loadData();
-      }).catch(() => this.toastr.error('Eroare la ștergerea informației!'));
+      }).catch(() => this.toastr.error('Eroare la ștergerea mașinii!'));
     });
   }
 
