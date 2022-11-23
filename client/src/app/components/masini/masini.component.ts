@@ -43,7 +43,7 @@ export class MasiniComponent implements OnInit {
     this.filtrareMarca = value
     this.masiniFiltrate = this.masini.filter(m => {
       return (
-        m.Denumire_marca.includes(this.filtrareMarca) && m.Denumire_model.includes(this.filtrareModel) &&
+        m.Denumire_marca.toLowerCase().includes(this.filtrareMarca.toLowerCase()) && m.Denumire_model.toLowerCase().includes(this.filtrareModel.toLowerCase()) &&
         (
           Number(this.filtrareAn) ? m.Anul_fabricatiei = Number(this.filtrareAn) : true
         ) &&
@@ -60,7 +60,7 @@ export class MasiniComponent implements OnInit {
     this.filtrareModel = value
     this.masiniFiltrate = this.masini.filter(m => {
       return (
-        m.Denumire_marca.includes(this.filtrareMarca) && m.Denumire_model.includes(this.filtrareModel) &&
+        m.Denumire_marca.toLowerCase().includes(this.filtrareMarca.toLowerCase()) && m.Denumire_model.toLowerCase().includes(this.filtrareModel.toLowerCase()) && 
         (
           Number(this.filtrareAn) ? m.Anul_fabricatiei = Number(this.filtrareAn) : true
         ) &&
