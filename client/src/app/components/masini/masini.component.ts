@@ -77,7 +77,7 @@ export class MasiniComponent implements OnInit {
     this.filtrareAn = value
     this.masiniFiltrate = this.masini.filter(m => {
       return (
-        m.Denumire_marca.includes(this.filtrareMarca) && m.Denumire_model.includes(this.filtrareModel) &&
+        m.Denumire_marca.toLowerCase().includes(this.filtrareMarca.toLowerCase()) && m.Denumire_model.toLowerCase().includes(this.filtrareModel.toLowerCase()) &&
         (
           Number(this.filtrareAn) ? m.Anul_fabricatiei === Number(this.filtrareAn) : true
         ) &&
@@ -94,7 +94,7 @@ export class MasiniComponent implements OnInit {
     this.filtrareCapacitate = value
     this.masiniFiltrate = this.masini.filter(m => {
       return (
-        m.Denumire_marca.includes(this.filtrareMarca) && m.Denumire_model.includes(this.filtrareModel) &&
+        m.Denumire_marca.toLowerCase().includes(this.filtrareMarca.toLowerCase()) && m.Denumire_model.toLowerCase().includes(this.filtrareModel.toLowerCase()) &&
         (
           Number(this.filtrareAn) ? m.Anul_fabricatiei === Number(this.filtrareAn) : true
         ) &&
@@ -111,7 +111,7 @@ export class MasiniComponent implements OnInit {
     this.filtrareTaxa = value
     this.masiniFiltrate = this.masini.filter(m => {
       return (
-        m.Denumire_marca.includes(this.filtrareMarca) && m.Denumire_model.includes(this.filtrareModel) &&
+        m.Denumire_marca.toLowerCase().includes(this.filtrareMarca.toLowerCase()) && m.Denumire_model.toLowerCase().includes(this.filtrareModel.toLowerCase()) &&
         (
           Number(this.filtrareAn) ? m.Anul_fabricatiei === Number(this.filtrareAn) : true
         ) &&
@@ -137,7 +137,7 @@ export class MasiniComponent implements OnInit {
       this.masini = data
       this.masiniFiltrate = data.filter((m: InterfataMasina) => {
         return (
-          m.Denumire_marca.includes(this.filtrareMarca) && m.Denumire_model.includes(this.filtrareModel) &&
+          m.Denumire_marca.toLowerCase().includes(this.filtrareMarca.toLowerCase()) && m.Denumire_model.toLowerCase().includes(this.filtrareModel.toLowerCase()) &&
           (
             Number(this.filtrareAn) ? m.Anul_fabricatiei === Number(this.filtrareAn) : true
           ) &&

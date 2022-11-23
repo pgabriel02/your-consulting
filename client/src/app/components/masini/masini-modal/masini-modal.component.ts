@@ -28,6 +28,7 @@ export class MasiniModalComponent implements OnInit {
   }
 
   save(): void {
+    this.campuriIncorecte = []
     if(!this.modal.Denumire_marca || this.modal.Denumire_marca.length > 255) {
       this.toastr.error('Marcă invalidă!')
       this.campuriIncorecte.push(0)

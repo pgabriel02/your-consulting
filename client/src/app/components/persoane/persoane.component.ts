@@ -42,21 +42,21 @@ export class PersoaneComponent implements OnInit {
   set _filtrareNume(value: string) {
     this.filtrareNume = value
     this.persoaneFiltrate = this.persoane.filter(p => {
-      return ((p.nume.includes(value) || p.prenume.includes(value)) && p.CNP.includes(this.filtrareCNP) && (Number(this.filtrareVarsta) ? Number(this.filtrareVarsta) === p.Varsta : true))
+      return ((p.nume.toLowerCase().includes(this.filtrareNume.toLowerCase()) || p.prenume.toLowerCase().includes(this.filtrareNume.toLowerCase())) && p.CNP.includes(this.filtrareCNP) && (Number(this.filtrareVarsta) ? Number(this.filtrareVarsta) === p.Varsta : true))
     })
   }
 
   set _filtrareCNP(value: string) {
     this.filtrareCNP = value
     this.persoaneFiltrate = this.persoane.filter(p => {
-      return ((p.nume.includes(this.filtrareNume) || p.prenume.includes(this.filtrareNume)) && p.CNP.includes(this.filtrareCNP) && (Number(this.filtrareVarsta) ? Number(this.filtrareVarsta) === p.Varsta : true))
+      return ((p.nume.toLowerCase().includes(this.filtrareNume.toLowerCase()) || p.prenume.toLowerCase().includes(this.filtrareNume.toLowerCase())) && p.CNP.includes(this.filtrareCNP) && (Number(this.filtrareVarsta) ? Number(this.filtrareVarsta) === p.Varsta : true))
     })
   }
   
   set _filtrareVarsta(value: string) {
     this.filtrareVarsta = value
     this.persoaneFiltrate = this.persoane.filter(p => {
-      return ((p.nume.includes(this.filtrareNume) || p.prenume.includes(this.filtrareNume)) && p.CNP.includes(this.filtrareCNP) && (Number(this.filtrareVarsta) ? Number(this.filtrareVarsta) === p.Varsta : true))
+      return ((p.nume.toLowerCase().includes(this.filtrareNume.toLowerCase()) || p.prenume.toLowerCase().includes(this.filtrareNume.toLowerCase())) && p.CNP.includes(this.filtrareCNP) && (Number(this.filtrareVarsta) ? Number(this.filtrareVarsta) === p.Varsta : true))
     })
   }
 
